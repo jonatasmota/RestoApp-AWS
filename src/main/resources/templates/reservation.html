@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NBCC Restaurant - Hospitality and Tourism</title>
+
+<link rel="shortcut icon" href="/images/favicon-32x32.png"
+	type="image/svg+xml" />
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/css/bootstrap.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Rubik:wght@400;500;600;700&family=Shadows+Into+Light&display=swap"
+	rel="stylesheet" />
+<link rel="stylesheet" href="/css/reservation.css" />
+
+<link rel="preload" as="image" href="/images/hero-banner.png"
+	media="min-width(768px)" />
+<link rel="preload" as="image" href="/images/hero-banner-bg.png"
+	media="min-width(768px)" />
+</head>
+
+<body id="top">
+	<!-- Header -->
+	<header class="header" data-header>
+		<div class="container">
+			<h1>
+				<a href="#" class="logo"> <img src="/images/nbcc.png" alt=""
+					class="logo-img">
+				</a>
+			</h1>
+
+			<nav class="navbar" data-navbar>
+				<ul class="navbar-list">
+					<li class="nav-item"><a href="#home" class="navbar-link"
+						data-nav-link>Home</a></li>
+
+					<li class="nav-item"><a href="#about" class="navbar-link"
+						data-nav-link>About</a></li>
+
+					<li class="nav-item"><a href="#food-menu" class="navbar-link"
+						data-nav-link>Menu</a></li>
+
+					<li class="nav-item"><a href="#events" class="navbar-link"
+						data-nav-link>Events</a></li>
+
+					<li class="nav-item"><a href="#gallery" class="navbar-link"
+						data-nav-link>Gallery</a></li>
+				</ul>
+			</nav>
+
+			<div class="header-btn-group">
+				<button class="btn btn-hover">Reservation</button>
+				<button class="nav-toggle-btn" aria-label="Toggle Menu"
+					data-nav-toggle-btn>
+					<span class="line top"></span> <span class="line middle"></span> <span
+						class="line bottom"></span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<article>
+
+			<!-- 
+        - #ABOUT
+      -->
+
+			<section class="section section-divider gray about" id="about">
+				<div class="container">
+
+					<div class="about-banner">
+						<img src="/images/blog-1.jpg" width="509" height="459"
+							loading="lazy" alt="Burger with Drinks" class="w-100 about-img">
+					</div>
+
+					<div class="about-content" th:object="${events}">
+						<input type="hidden" th:field="*{eventId}" />
+						<h2 class="h2 section-title" th:text="*{eventName}">Event Name</h2>
+
+						<p class="section-text" th:text="*{eventDetails}"></p>
+
+						<ul class="about-list">
+							<li class="about-item"><ion-icon
+									name="calendar-number-outline"></ion-icon>Event Date: <span class="span" th:text="*{eventDate}"></span></li>
+						</ul>
+
+						<h3 class="h3 section-title">Menu Name</h3>
+
+						<p class="section-text">Menu Description Menu Description Menu
+							Description Menu Description Menu Description Menu Description
+							Menu Description Menu Description</p>
+
+						<ul class="about-list">
+							<li class="about-item"><ion-icon
+									name="calendar-number-outline"></ion-icon> <span class="span">Event
+									Date</span></li>
+						</ul>
+
+						<button class="btn btn-hover">Book Table</button>
+
+					</div>
+
+				</div>
+			</section>
+
+
+			<section class="reservation" id="reservation">
+				<div class="container">
+					<h1>Add/Edit Reservation</h1>
+					<hr>
+
+					<!-- note: if no future events exist, the user cannot create a reservation  -->
+
+					<div >
+
+					<!-- 	<div class="card m-2">
+							<div class="card-body">
+								<h4>Event</h4>
+								<div class="row mb-4">
+									<form th:action="@{/create}" th:object="${eventID}">
+										<div class="col">
+											<div class="form-outline">
+												<label class="form-label" for="events">Event</label> <select
+													name="events" class="form-control">
+													<option th:each="fEvent : ${events}"
+														th:text="${fEvent.eventDate}" th:value="${fEvent.eventId}" />
+												</select>
+											</div>
+										</div>
+										<div class="col">
+											<div class="form-outline">
+												<button class="btn">Select</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+ -->
+						<form action="#" th:action="@{/res}" th:object="${reservation}" th:id="${resID}"
+							method="POST" th:if="${resEvent}">
+							<div class="card m-2">
+								<div class="card-body">
+									<div class="row mb-4">
+										<div class="col">
+											<div class="form-outline">
+												<h5>Event Name</h5>
+												<p th:text="${resEvent.eventName}"></p>
+											</div>
+										</div>
+										<div class="col">
+											<div class="form-outline">
+												<h5>Event Date</h5>
+												<p th:text="${resEvent.eventDate}"></p>
+											</div>
+										</div>
+									</div>
+									<div class="row mb-4">
+										<div class="col">
+											<div class="form-outline" th:if="${eventTimeSlots}">
+												<label class="form-label" for="time">Time Slot</label> <select
+													name="time" class="form-control">
+													<option th:each="timeSlot : ${eventTimeSlots}"
+														th:text="${timeSlot.hour}:${timeSlot.minute}" />
+												</select>
+											</div>
+										</div>
+										<div class="col">
+											<div class="form-outline">
+												<label class="form-label" for="seats">Seats</label> <select
+													name="seats" class="form-control">
+													<option th:each="num : ${seatList}" th:text="${num}" />
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card m-2">
+								<div class="card-body">
+									<h4>Contact Information</h4>
+									<div class="row mb-4">
+										<div class="col">
+											<div class="form-outline">
+												<label class="form-label" for="firstName">First Name</label>
+												<input type="text" th:field="*{firstName}" id="firstName"
+													class="form-control" />
+											</div>
+										</div>
+										<div class="col">
+											<div class="form-outline">
+												<label class="form-label" for="lastName">Last Name</label> <input
+													type="text" th:field="*{lastName}" id="lastName"
+													class="form-control" />
+											</div>
+										</div>
+									</div>
+									<div class="row mb-4">
+										<div class="col">
+											<div class="form-outline mb-4">
+												<div class="form-outline">
+													<label class="form-label" for="email">Email</label> <input
+														type="text" th:field="*{email}" id="email"
+														class="form-control" />
+												</div>
+											</div>
+
+											<div class="form-outline mb-4">
+												<label class="form-label" for="phone">Phone Number</label> <input
+													class="form-control" th:field="*{phone}" id="phone"></input>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="form-outline mb-4">
+												<div class="form-outline">
+													<label class="form-label" for="requests">Special
+														Requests</label>
+													<textarea class="form-control" th:field="*{requests}"
+														id="requests" rows="4"></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Submit button -->
+							<div class="m-2">
+								<button type="submit" class="btn btn-primary">Save</button>
+								<a th:href="@{/reservations}" class="btn btn-primary"> Back
+									to Reservations</a>
+								
+							</div>
+						</form>
+					</div>
+				</div>
+
+			</section>
+		</article>
+	</main>
+
+
+
+	<footer class="footer">
+		<div class="footer-top"
+			style="background-image: url('/images/footer-illustration.png')">
+			<div class="container">
+				<div class="footer-brand">
+					<a href="#" class="logo">Resto<span class="span">*</span></a>
+					<p class="footer-text">Lorem ipsum dolor, sit amet consectetur
+						adipisicing elit. Nesciunt, dignissimos similique? Ex consequatur
+						sunt pariatur.</p>
+
+					<ul class="social-list">
+						<li><a href="#" class="social-link"> <ion-icon
+									name="logo-facebook"></ion-icon>
+						</a></li>
+
+						<li><a href="#" class="social-link"> <ion-icon
+									name="logo-twitter"></ion-icon>
+						</a></li>
+
+						<li><a href="#" class="social-link"> <ion-icon
+									name="logo-instagram"></ion-icon>
+						</a></li>
+
+						<li><a href="#" class="social-link"> <ion-icon
+									name="logo-linkedin"></ion-icon>
+						</a></li>
+					</ul>
+				</div>
+
+				<ul class="footer-list">
+					<li>
+						<p class="footer-list-title">Contact Info</p>
+					</li>
+
+					<li>
+						<p class="footer-list-item">+1 506-111 1234</p>
+					</li>
+
+					<li>
+						<p class="footer-list-item">resto@nbcc.ca</p>
+					</li>
+
+					<li>
+						<address class="footer-list-item">1234 Mountain Road,
+							Moncton, NB E1C123</address>
+					</li>
+				</ul>
+
+				<ul class="footer-list">
+					<li>
+						<p class="footer-list-title">Opening Hours</p>
+					</li>
+
+					<li>
+						<p class="footer-list-item">Monday-Friday: 09:00-03:30</p>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+
+		<div class="footer-bottom">
+			<div class="container">
+				<p class="copyright-text">
+					&copy; 2022 <a href="#" class="copyright-link"> NBCC </a> All
+					Rights Reserved.
+				</p>
+			</div>
+		</div>
+	</footer>
+
+	<a href="#top" class="back-top-btn" aria-label="Back to Top"
+		data-back-top-btn> <ion-icon name="chevron-up"></ion-icon>
+	</a>
+
+	<script src="/js/script.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		defer></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		defer></script>
+	<script type="module"
+		src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule
+		src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>
